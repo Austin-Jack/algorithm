@@ -14,6 +14,7 @@
         <module>systemlearning</module>
         <module>primary</module>
         <module>basic</module>
+        <module>training</module>
     </modules>
 
     <properties>
