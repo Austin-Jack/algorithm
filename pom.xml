@@ -10,11 +10,12 @@
     <packaging>pom</packaging>
     <modules>
         <module>common</module>
-        <module>trainingcamp</module>
-        <module>systemlearning</module>
+        <module>training-camp</module>
+        <module>system-learning</module>
         <module>primary</module>
         <module>basic</module>
         <module>training</module>
+        <module>other-algorithms</module>
     </modules>
 
     <properties>
