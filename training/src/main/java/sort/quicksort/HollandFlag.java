@@ -7,21 +7,29 @@ package sort.quicksort;
  * @since 2025/5/20
  */
 public class HollandFlag {
+	/**
+	 * 将数组以x为界限，划分出<=x区在左 >x 在右
+	 *
+	 * @param arr	数组
+	 * @param x		基准值
+	 */
 	public static void partition1(int[] arr, int x) {
 		if (arr == null || arr.length == 0) {
 			return;
 		}
 		int lessR = -1, i = 0;
 		while (i < arr.length) {
-			while (i < arr.length && arr[i] < x) {
-				swap(arr, i, ++lessR);
-				i++;
+			// 当前数比 小于等于 x 和小于区下一个交换 index++
+			while (i < arr.length && arr[i] <= x) {
+				swap(arr, i++, ++lessR);
 			}
 			if (i > arr.length) {
 				return;
 			}
-			swap(arr, lessR + 1, i++);
-		}	
+			// 如果没有越界 并且能执行到这 说明当前数比x大
+			// 直接跳到下一个数字
+			i++;
+		}
 	}
 	
 	private static void swap(int[] arr, int i, int j) {
@@ -36,65 +44,43 @@ public class HollandFlag {
 		BitMap bitMap = new BitMap(maxVal);
 		for (int i = 0; i < size; i++) {
 			int val = (int) (Math.random() * (maxVal + 1));
+			// 如果要控制一个数字不能存在于这个数组中 则往bitMap中加入
+			// 用于后面搂那个数字
 			if (!exist) {
 				bitMap.add(val);
 			}
 			arr[i] = val;
 		}
 		if (exist) {
-			 arr[size] = arr[(int) (Math.random() * size)];
-			 return arr;
+			arr[size] = arr[(int) (Math.random() * size)];
+			return arr;
 		}
 		int notExist;
 		do {
+			// 随机选一个数组中的元素 +1 直到这个数字是不存在于arr的
 			notExist = arr[(int) (Math.random() * size)]  + 1;
 		} while (bitMap.contains(notExist));
 		arr[size] = notExist;
 		return arr;
 	}
 	
-	private static boolean judge(int[] arr, int x, boolean exist) {
+	private static boolean judge(int[] arr, int x) {
 		if (arr == null || arr.length == 0) {
 			return true;
 		}
-		if (exist) {
-			int equalL = -1, equalR = -1;
-			for (int i = 0; i < arr.length; i++) {
-				if (arr[i] == x) {
-					equalL = equalR = i;
-					while (equalR < arr.length && arr[equalR++] == x) {}
-					break;
-				}
-			}
-			for (int i = 0; i < equalL; i++ ) {
-				if (arr[i] >= arr[equalL]) {
+		boolean seenGreater = false;
+		for (int value : arr) {
+			if (value <= x) {
+				if (seenGreater) {
 					return false;
 				}
-			}
-			for (int i = arr.length - 1; i > equalR; i--) {
-				if (arr[i] <= arr[equalR]) {
-					return false;
-				}
-			}
-			return true;
-		}
-		int minLeft = 0;
-		for (int i = 0; i < arr.length; i++) {
-			minLeft = arr[i] < x ? i : minLeft;
-		}
-		for (int i = 0; i < minLeft; i++) {
-			if (arr[i] >= arr[minLeft]) {
-				return false;
-			}
-		}
-		for (int i = arr.length - 1; i > minLeft; i--) {
-			if (arr[i] <= arr[minLeft]) {
-				return false;
+			} else {
+				seenGreater = true;
 			}
 		}
 		return true;
 	}
-
+	
 	private static void printArray(int[] arr) {
 		for (int j : arr) {
 			System.out.print(j + " ");
@@ -103,9 +89,9 @@ public class HollandFlag {
 	
 	
 	public static void main (String[] args) {
-		int maxSize = 10;
-		int maxVal = 100;
-		int testTimes = 10_000;
+		int maxSize = 10000000;
+		int maxVal = 10000;
+		int testTimes = 10_00000;
 		boolean exist = false;
 		boolean sucess = true;
 		for (int i = 0; i < testTimes; i++ ) {
@@ -114,7 +100,7 @@ public class HollandFlag {
 			int[] arr2 = new int[arr.length - 1];
 			System.arraycopy(arr, 0, arr2, 0, arr.length - 1);
 			partition1(arr2, x);
-			if (!judge(arr2, x, exist)) {
+			if (!judge(arr2, x)) {
 				System.out.println("Oops!!!");
 				System.out.println("array:");
 				printArray(arr2);
