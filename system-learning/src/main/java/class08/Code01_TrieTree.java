@@ -230,7 +230,7 @@ public class Code01_TrieTree {
 			int count = 0;
 			for (String cur : box.keySet()) {
 				if (cur.startsWith(pre)) {
-					count++;
+					count += box.get(cur);
 				}
 			}
 			return count;
@@ -259,7 +259,7 @@ public class Code01_TrieTree {
 	public static void main(String[] args) {
 		int arrLen = 100;
 		int strLen = 20;
-		int testTimes = 100000;
+		int testTimes = 10000000;
 		for (int i = 0; i < testTimes; i++) {
 			String[] arr = generateRandomStringArray(arrLen, strLen);
 			Trie1 trie1 = new Trie1();
