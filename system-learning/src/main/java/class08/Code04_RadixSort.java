@@ -122,12 +122,12 @@ public class Code04_RadixSort {
 	public static void main(String[] args) {
 		int testTime = 500000;
 		int maxSize = 100;
-		int maxValue = 100000;
+		int maxValue = 10000000;
 		boolean succeed = true;
 		for (int i = 0; i < testTime; i++) {
 			int[] arr1 = generateRandomArray(maxSize, maxValue);
 			int[] arr2 = copyArray(arr1);
-			radixSort(arr1);
+			radixSort2(arr1);
 			comparator(arr2);
 			if (!isEqual(arr1, arr2)) {
 				succeed = false;
@@ -140,9 +140,42 @@ public class Code04_RadixSort {
 
 		int[] arr = generateRandomArray(maxSize, maxValue);
 		printArray(arr);
-		radixSort(arr);
+		radixSort2(arr);
 		printArray(arr);
 
 	}
 
+	public static void radixSort2(int[] arr) {
+		if (arr == null || arr.length < 2) {
+			return;
+		}
+		int max = arr[0];
+		for (int num : arr) {
+			max = Math.max(max, num);
+		}
+		int digits = 0;
+		while (max != 0) {
+			digits++;
+			max /= 10;
+		}
+		for (int i = 1; i <= digits; i++) {
+			int[] count = new int[10];
+			int[] help = new int[arr.length];
+			for (int num : arr) {
+				int index =  (num / (int) Math.pow(10, i - 1)) % 10;
+				// count[i] 表示在i（个、十、百）位有多少个数
+				count[index]++;
+			}
+			for (int j = 1; j < count.length; j++) {
+				// 此时cout[j] 表示在i（个、十、百）位有多少个数<=j（下标)
+				count[j] += count[j - 1];
+			}
+			for (int j = arr.length - 1; j >= 0; j--) {
+				int num = arr[j];
+				int index = (num / (int) Math.pow(10, i - 1)) % 10;
+				help[--count[index]] = num;
+			}
+			System.arraycopy(help, 0, arr, 0, help.length);
+		}
+	}
 }
