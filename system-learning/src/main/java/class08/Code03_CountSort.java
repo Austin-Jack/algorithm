@@ -65,7 +65,9 @@ public class Code03_CountSort {
 		}
 		// 此时count的含义为在 原始数组中有count[i]个数 <= i + min
 		int[] res = new int[arr.length];
-		for (int num : arr) {
+		// 从后往前排 保证稳定性
+		for (int i = arr.length - 1; i >= 0; i--) {
+			int num = arr[i];
 			//<= num 的有 count[num - min] 个 -> -1转为索引位置
 			int index = count[num - min] - 1;
 			res[index] = num;
