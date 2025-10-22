@@ -15,7 +15,7 @@
         <module>primary</module>
         <module>basic</module>
         <module>training</module>
-        <module>other-algorithms</module>
+        <module>interview-demo</module>
     </modules>
 
     <properties>

@@ -1,6 +1,7 @@
 package datastructure.array;
 
 
+import java.util.Hashtable;
 import java.util.NoSuchElementException;
 
 /**
@@ -40,6 +41,7 @@ public class MyArrayList<E> {
             resize(2 * cap);
         }
         
+        HashTable table=  new Hashtable<>()
         this.data[size] = e;
         this.size++;
     }
